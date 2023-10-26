@@ -3,10 +3,11 @@ const router = express.Router();
 
 const userController = require ('../controller/UserController');
 
-router.post('/save', userController.getAll);
-router.put('/update/:id',userController.getAll);
-router.put('/delete/:id',  userController.getAll);
-router.delete('/destroy/:id', userController.getAll);
+router.post('/create', userController.create);
+router.put('/update/:id',userController.update);
+router.put('/delete/:id',  userController.delete);
+router.delete('/destroy/:id', userController.destroy);
+router.get('/:id', userController.getById);
 router.get('/', userController.getAll);
 
 module.exports = router;
