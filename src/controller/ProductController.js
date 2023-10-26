@@ -5,7 +5,7 @@ class ProductController {
     getAll(req, res) {
         Product.find({})
         .then ((products)=> res.send(products))
-        .catch(err => console.log(err));
+        .catch(() => res.status(404).send('Không tìm thấy danh sách sản phẩm.'));
     }
 
     getById(req, res) {
