@@ -9,11 +9,11 @@ const User = new Schema(
         password: { type: String, required:true },
         address: { type: String },
         phone: { type: String, maxLength:10 },
-        isAdmin:{type: Boolean, default: false},
-        isActive: {type: Boolean, default: true},
-        accessToken: {type: String,},
-        refreshToken: {type: String,  },
-        orders: {type: Schema.Types.ObjectId, ref: 'Order'}
+        isAdmin: { type: Boolean, default: false},
+        isActive: { type: Boolean, default: true},
+        accessToken: { type: String, default:""},
+        refreshToken: { type: String, default:"" },
+        orders: [{ type: Schema.Types.ObjectId, ref: 'Order'}]
     }, 
     {
         timestamps: true

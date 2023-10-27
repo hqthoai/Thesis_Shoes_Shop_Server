@@ -9,7 +9,6 @@ const Product = new Schema(
         price: { type: Number, required: true },
         brand: { type: Schema.Types.ObjectId, ref:'Brand', required: true },
         categoryId : { type: Schema.Types.ObjectId, ref:'Category', default:null },
-        forGender: {type: Number},
         rating: { type: Number, default: 0 },
         numReviews: { type: Number, default: 0 },
         countInStock: { type: Number, default: 20, required: true },

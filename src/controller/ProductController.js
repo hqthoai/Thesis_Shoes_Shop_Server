@@ -24,7 +24,7 @@ class ProductController {
             product.save();
             res.send(product);
         } catch (error) {
-            res.status(500).send('Xảy ra lỗi trong quá trình tạo sản phẩm.')
+            throw Error(`Xảy ra lỗi trong quá trình tạo sản phẩm :  ${err}`)
         }  
     }
 
@@ -70,7 +70,7 @@ class ProductController {
                 res.status(200).send('Xóa vĩnh viễn sản phẩm thành công.');
             }
         } catch (error) {
-            res.status(500).send('Có lỗi khi xóa sản phẩm');
+            throw Error(`Xảy ra lỗi trong quá trình xóa sản phẩm :  ${err}`)
         }
     }
 

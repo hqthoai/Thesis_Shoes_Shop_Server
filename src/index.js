@@ -1,21 +1,22 @@
 require('dotenv').config();
 const express = require ('express');
-const route = require('./routes');
 require('./config/db/connect');
-
+const cors = require('cors')
 const app = express();
+const route = require('./routes');
+const morgan = require('morgan');
 
 const port = process.env.PORT || 3001;
 
+app.use(morgan('combined'));
 // middleware: sử dụng để xử lý các yêu cầu gửi từ client dưới dạng URL-encoded.
 app.use(express.urlencoded({extended: true}));
 // middleware: sử dụng để xử lý các yêu cầu gửi từ client dưới dạng JSON.
 app.use(express.json());
 
+app.use(cors());
 route(app);
 
 app.listen(port, ()=> {
     console.log(`Sever is running at http://localhost:${port}`);
 })
-
-
