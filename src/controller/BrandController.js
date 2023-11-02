@@ -1,17 +1,17 @@
-const Category = require('../models/Category');
+const Brand = require('../models/Brand');
 
-const CategoryController = {
+const BrandController = {
     
     getAll: (req, res) => {
-        Category.find({})
-            .then ((categories)=> res.send(categories))
+        Brand.find({})
+            .then ((brands)=> res.send(brands))
             .catch(() => res.status(404).send('Không tìm thấy danh sách danh mục.'));
     },
 
     getById: (req, res) => {
-        Category.findOne({_id: req.params.id})
-        .then((category) => {
-           res.send(category);
+        Brand.findOne({_id: req.params.id})
+        .then((brand) => {
+           res.send(brand);
         })
         .catch(()=>{
             res.status(404).send('Không tìm thấy danh mục.')
@@ -19,19 +19,19 @@ const CategoryController = {
     },
 
     create: (req, res) => { 
-        const category = new Category(req.body);
+        const brand = new Brand(req.body);
         try {
-            category.save();
-            res.send(category);
+            brand.save();
+            res.send(brand);
         } catch (error) {
             res.status(500).send('Xảy ra lỗi trong quá trình tạo danh mục.')
         }  
     },
 
     update: (req, res) => {
-        Category.findOne({_id: req.params.id})
-        .then((category) => {
-            Category.updateOne({_id: category._id}, req.body)
+        Brand.findOne({_id: req.params.id})
+        .then((brand) => {
+            brand.updateOne({_id: brand._id}, req.body)
             .then(()=>{
                 res.status(200).send('Cập nhật danh mục thành công.');
             })
@@ -45,9 +45,9 @@ const CategoryController = {
     },
 
     delete: (req, res) => {
-        Category.findOne({_id: req.params.id})
-        .then((category)=> {
-            Category.updateOne({_id: category._id}, req.body)
+        Brand.findOne({_id: req.params.id})
+        .then((brand)=> {
+            brand.updateOne({_id: brand._id}, req.body)
             .then(()=>{
                 res.status(200).send('Xóa danh mục thành công.');
             })
@@ -62,7 +62,7 @@ const CategoryController = {
 
     destroy: async (req, res) => {
         try {
-            const result = await Category.deleteOne({_id: req.params.id});
+            const result = await Brand.deleteOne({_id: req.params.id});
             if (result.deletedCount===0) {
                 res.status(404).send('Không tìm thấy danh mục.');
             }
@@ -76,4 +76,4 @@ const CategoryController = {
 }
 
 
-module.exports = CategoryController;
+module.exports = BrandController;

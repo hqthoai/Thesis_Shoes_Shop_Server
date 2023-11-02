@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const Category = new Schema(
     {
         name: { type: String, required:true },
-        parentId: { type: Schema.Types.ObjectId , ref: 'Category', },
+        parentId: { type: Schema.Types.ObjectId , ref: 'Category', default: null },
+        description: { type: String, required:true },
     }, 
     {
         timestamps: true

@@ -12,7 +12,7 @@ const User = new Schema(
         isAdmin: { type: Boolean, default: false},
         isActive: { type: Boolean, default: true},
         accessToken: { type: String, default:""},
-        refreshToken: { type: String, default:"" },
+        refreshTokens: [{ type: String, default:"" }],
         orders: [{ type: Schema.Types.ObjectId, ref: 'Order'}]
     }, 
     {
