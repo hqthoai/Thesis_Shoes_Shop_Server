@@ -5,10 +5,11 @@ const userController = require ('../controller/UserController');
 
 // router.post('/create', userController.create);
 
-router.get('/getAll', userController.getAll);
-router.put('/update/:id', authToken.verifyTokenAdmin, userController.update);
 router.put('/delete/:id', authToken.verifyTokenAdmin, userController.delete);
-router.delete('/destroy/:id',authToken.verifyTokenAdmin, userController.destroy);
+router.put('/:id', authToken.verifyTokenAdmin, userController.update);
+router.delete('/:id',authToken.verifyTokenAdmin, userController.destroy);
 router.get('/:id',authToken.verifyTokenAdmin, userController.getById);
+router.post('/', userController.create);
+router.get('/', userController.getAll);
 
 module.exports = router;

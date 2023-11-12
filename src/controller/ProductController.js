@@ -11,7 +11,7 @@ const ProductController = {
     getById: (req, res) => {
         Product.findOne({_id: req.params.id})
         .then((product) => {
-           res.json(product);
+           res.status(200).json(product);
         })
         .catch(()=>{
             res.status(404).json('Không tìm thấy sản phẩm.')
@@ -45,7 +45,7 @@ const ProductController = {
         const product = new Product(req.body);
         try {
             product.save();
-            res.status(200).json(product);
+            res.status(201).json(product);
         } catch (error) {
             res.status(500).json(`Xảy ra lỗi trong quá trình tạo sản phẩm :  ${err}`)
         }  
@@ -72,7 +72,7 @@ const ProductController = {
         .then((product)=> {
             Product.updateOne({_id: product._id}, req.body)
             .then(()=>{
-                res.status(200).json('Xóa sản phẩm thành công.');
+                res.status(204).json('Xóa sản phẩm thành công.');
             })
             .catch((err)=> {
                 res.status(500).json('Có lỗi khi xóa sản phẩm.');
@@ -90,7 +90,7 @@ const ProductController = {
                 res.status(404).json('Không tìm thấy sản phẩm.');
             }
             else {
-                res.status(200).json('Xóa vĩnh viễn sản phẩm thành công.');
+                res.status(204).json('Xóa vĩnh viễn sản phẩm thành công.');
             }
         } catch (error) {
             res.status(500).json(`Xảy ra lỗi trong quá trình xóa sản phẩm :  ${err}`)

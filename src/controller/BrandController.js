@@ -4,17 +4,17 @@ const BrandController = {
     
     getAll: (req, res) => {
         Brand.find({})
-            .then ((brands)=> res.send(brands))
-            .catch(() => res.status(404).send('Không tìm thấy danh sách danh mục.'));
+            .then ((brands)=> res.status(200).json(brands))
+            .catch(() => res.status(404).json('Không tìm thấy danh sách danh mục.'));
     },
 
     getById: (req, res) => {
         Brand.findOne({_id: req.params.id})
         .then((brand) => {
-           res.send(brand);
+           res.status(200).json(brand);
         })
         .catch(()=>{
-            res.status(404).send('Không tìm thấy danh mục.')
+            res.status(404).json('Không tìm thấy danh mục.')
         })
     },
 
@@ -22,9 +22,9 @@ const BrandController = {
         const brand = new Brand(req.body);
         try {
             brand.save();
-            res.send(brand);
+            res.status(201).json(brand);
         } catch (error) {
-            res.status(500).send('Xảy ra lỗi trong quá trình tạo danh mục.')
+            res.status(500).json('Xảy ra lỗi trong quá trình tạo danh mục.')
         }  
     },
 
@@ -33,14 +33,14 @@ const BrandController = {
         .then((brand) => {
             brand.updateOne({_id: brand._id}, req.body)
             .then(()=>{
-                res.status(200).send('Cập nhật danh mục thành công.');
+                res.status(200).json('Cập nhật danh mục thành công.');
             })
             .catch((err)=>{
-                res.status(500).send('Có lỗi xảy ra trong quá trình cập nhật danh mục.');
+                res.status(500).json('Có lỗi xảy ra trong quá trình cập nhật danh mục.');
             })
         })
         .catch(()=>{
-            res.status(404).send('Không tìm thấy danh mục.')
+            res.status(404).json('Không tìm thấy danh mục.')
         })
     },
 
@@ -49,14 +49,14 @@ const BrandController = {
         .then((brand)=> {
             brand.updateOne({_id: brand._id}, req.body)
             .then(()=>{
-                res.status(200).send('Xóa danh mục thành công.');
+                res.status(204).json('Xóa danh mục thành công.');
             })
             .catch((err)=> {
-                res.status(500).send('Có lỗi khi xóa danh mục.');
+                res.status(500).json('Có lỗi khi xóa danh mục.');
             });
         })
         .catch(()=> {
-            res.status(404).send('Không tìm thấy danh mục.');
+            res.status(404).json('Không tìm thấy danh mục.');
         })
     },
 
@@ -64,13 +64,13 @@ const BrandController = {
         try {
             const result = await Brand.deleteOne({_id: req.params.id});
             if (result.deletedCount===0) {
-                res.status(404).send('Không tìm thấy danh mục.');
+                res.status(404).json('Không tìm thấy danh mục.');
             }
             else {
-                res.status(200).send('Xóa vĩnh viễn danh mục thành công.');
+                res.status(204).json('Xóa vĩnh viễn danh mục thành công.');
             }
         } catch (error) {
-            res.status(500).send('Có lỗi khi xóa danh mục');
+            res.status(500).json('Có lỗi khi xóa danh mục');
         }
     }
 }

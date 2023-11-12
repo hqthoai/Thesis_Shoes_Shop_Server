@@ -18,7 +18,7 @@ const AuthController = {
                     password: hashPassword,
                     phone,
                 })
-                return res.json(user)
+                return res.status(200).json(user)
             }
             else {
                 return res.status(400).json({
@@ -68,9 +68,9 @@ const AuthController = {
 
                 await User.updateOne({ _id: user._id }, user);
                 const { password, ...others } = user._doc;
-                return res.json(others);
+                return res.status(200).json(others);
             } else {
-                return res.status(400).json('Mật khẩu không chính xác! Vui lòng nhập lại');
+                return res.status(401).json('Mật khẩu không chính xác! Vui lòng nhập lại');
             }
         } catch (err) {
             return res.status(400).json({ message: `Có lỗi trong quá trình đăng nhập : ${err}` });
@@ -98,7 +98,7 @@ const AuthController = {
             user.refreshTokens.push(newRefreshToken);
             await User.updateOne({ _id: user._id }, user);
             const { password, ...others } = user._doc;
-            return res.json(others);
+            return res.status(200).json(others);
         })
     },
 

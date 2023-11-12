@@ -4,17 +4,17 @@ const OrderController = {
 
     getAll: (req, res) => {
         Order.find({})
-            .then ((orders)=> res.send(orders))
-            .catch(() => res.status(404).send('Không tìm thấy danh sách đơn hàng.'));
+            .then ((orders)=> res.json(orders))
+            .catch(() => res.status(404).json('Không tìm thấy danh sách đơn hàng.'));
     },
 
     getById: (req, res) => {
         Order.findOne({_id: req.params.id})
         .then((order) => {
-            res.send(order);
+            res.json(order);
         })
         .catch(()=>{
-            res.status(404).send('Không tìm thấy đơn hàng.')
+            res.status(404).json('Không tìm thấy đơn hàng.')
         })
     },
 
@@ -22,9 +22,9 @@ const OrderController = {
         const order = new Order(req.body);
         try {
             order.save();
-            res.send(order);
+            res.status(201).json(order);
         } catch (error) {
-            res.status(500).send('Xảy ra lỗi trong quá trình tạo đơn hàng.')
+            res.status(500).json('Xảy ra lỗi trong quá trình tạo đơn hàng.')
         }  
     },
 
@@ -33,14 +33,14 @@ const OrderController = {
         .then((order) => {
             order.updateOne({_id: order._id}, req.body)
             .then(()=>{
-                res.status(200).send('Cập nhật đơn hàng thành công.');
+                res.status(200).json('Cập nhật đơn hàng thành công.');
             })
             .catch((err)=>{
-                res.status(500).send('Có lỗi xảy ra trong quá trình cập nhật đơn hàng.');
+                res.status(500).json('Có lỗi xảy ra trong quá trình cập nhật đơn hàng.');
             })
         })
         .catch(()=>{
-            res.status(404).send('Không tìm thấy đơn hàng.')
+            res.status(404).json('Không tìm thấy đơn hàng.')
         })
     },
 
@@ -49,14 +49,14 @@ const OrderController = {
         .then((order)=> {
             Order.updateOne({_id: order._id}, req.body)
             .then(()=>{
-                res.status(200).send('Xóa đơn hàng thành công.');
+                res.status(204).json('Xóa đơn hàng thành công.');
             })
             .catch((err)=> {
-                res.status(500).send('Có lỗi khi xóa đơn hàng.');
+                res.status(500).json('Có lỗi khi xóa đơn hàng.');
             });
         })
         .catch(()=> {
-            res.status(404).send('Không tìm thấy đơn hàng.');
+            res.status(404).json('Không tìm thấy đơn hàng.');
         })
     },
 
@@ -64,13 +64,13 @@ const OrderController = {
         try {
             const result = await Order.deleteOne({_id: req.params.id});
             if (result.deletedCount===0) {
-                res.status(404).send('Không tìm thấy đơn hàng.');
+                res.status(404).json('Không tìm thấy đơn hàng.');
             }
             else {
-                res.status(200).send('Xóa vĩnh viễn đơn hàng thành công.');
+                res.status(204).json('Xóa vĩnh viễn đơn hàng thành công.');
             }
         } catch (error) {
-            res.status(500).send('Có lỗi khi xóa đơn hàng');
+            res.status(500).json('Có lỗi khi xóa đơn hàng');
         }
     }
 }
