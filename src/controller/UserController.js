@@ -44,7 +44,6 @@ const UserController = {
         try {
             const {email, firstName, lastName, password, phone, address} = req.body;
             const existentUser = await User.findOne({ email });
-    
             if (!existentUser) {
                 const hashPassword = await bcrypt.hash(password, 10)
                 const user = await User.create({
@@ -67,20 +66,31 @@ const UserController = {
         }
     },
 
-    update: (req, res) => {
-        User.findOne({_id: req.params.id})
-        .then((user) => {
-            User.updateOne({_id: user._id}, req.body)
-            .then(()=>{
-                res.status(200).json('Cập nhật người dùng thành công.');
-            })
-            .catch((err)=>{
-                res.status(500).json('Có lỗi xảy ra trong quá trình cập nhật user.');
-            })
-        })
-        .catch(()=>{
-            res.status(404).json('Không tìm thấy người dùng.')
-        })
+    update: async (req, res) => {
+        try {
+            const {email, firstName, lastName, password, phone, address} = req.body;
+            const user = await User.findOne({ email });
+            if (user) {
+                const hashPassword = await bcrypt.hash(password, 10)
+                const userUpdated = {
+                    email,
+                    firstName,
+                    lastName,
+                    password: hashPassword,
+                    phone,
+                    address
+                }
+                await User.updateOne({_id: user._id}, userUpdated)
+                return res.status(200).json("Cập nhật user thành công")
+            }
+            else {
+                return res.status(400).json({
+                    message:'User đã tồn tại!',
+                })
+            }
+        } catch (err) {
+            return res.status(400).json(`Có lỗi trong quá trình cập nhật user :  ${err}`)
+        }
     },
 
     delete: (req, res) => {
