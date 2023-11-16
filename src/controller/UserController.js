@@ -1,4 +1,5 @@
 
+const bcrypt = require('bcrypt')
 const User = require('../models/User');
 
 const UserController = {
@@ -19,14 +20,51 @@ const UserController = {
         })
     },
 
-    create(req, res) {
-        const user = new User (req.body);
+    changePassword: (req, res) => {
+        User.findOne({_id: req.params.id})
+        .then(async (user) => {
+            const { password, newPassword } = req.body;
+            // kiểm tra password người dùng gửi lên
+            const isSamePassword = bcrypt.compareSync(password, user.password);
+            if (isSamePassword) {
+                const hashNewPassword = await bcrypt.hash(newPassword,10)
+                await User.updateOne({ _id: user._id }, { password: hashNewPassword});
+                const { password, ...others } = user._doc;
+                return res.status(200).json(others);
+            } else {
+                return res.status(401).json('Mật khẩu không chính xác! Vui lòng nhập lại');
+            }
+        })
+        .catch(()=>{
+            res.status(404).json('Không tìm thấy người dùng.')
+        })
+    },
+
+    create: async (req, res) =>  {
         try {
-            user.save();
-            res.status(201).json(user);
-        } catch (error) {
-            res.status(500).json(`Xảy ra lỗi trong quá trình tạo user :  ${err}`)
-        }  
+            const {email, firstName, lastName, password, phone, address} = req.body;
+            const existentUser = await User.findOne({ email });
+    
+            if (!existentUser) {
+                const hashPassword = await bcrypt.hash(password, 10)
+                const user = await User.create({
+                    email,
+                    firstName,
+                    lastName,
+                    password: hashPassword,
+                    phone,
+                    address
+                })
+                return res.status(201).json(user)
+            }
+            else {
+                return res.status(400).json({
+                    message:'Email đã tồn tại!',
+                })
+            }
+        } catch (err) {
+            return res.status(400).json(`Có lỗi trong quá trình tạo user :  ${err}`)
+        }
     },
 
     update: (req, res) => {

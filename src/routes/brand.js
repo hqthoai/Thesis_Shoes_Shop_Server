@@ -3,7 +3,7 @@ const router = express.Router();
 const authToken = require('../middlewares/authToken');
 const brandController = require('../controller/BrandController');
 
-router.put('/delete/:id', authToken.verifyTokenAdmin, brandController.delete);
+router.put('/:id/delete', authToken.verifyTokenAdmin, brandController.delete);
 router.put('/:id', authToken.verifyTokenAdmin, brandController.update);
 router.delete('/:id', authToken.verifyTokenAdmin, brandController.destroy);
 router.get('/:id', brandController.getById);  

@@ -5,10 +5,11 @@ const userController = require ('../controller/UserController');
 
 // router.post('/create', userController.create);
 
-router.put('/delete/:id', authToken.verifyTokenAdmin, userController.delete);
-router.put('/:id', authToken.verifyTokenAdmin, userController.update);
-router.delete('/:id',authToken.verifyTokenAdmin, userController.destroy);
-router.get('/:id',authToken.verifyTokenAdmin, userController.getById);
+router.put('/:id/delete', authToken.verifyTokenAdmin, userController.delete);
+router.put('/:id/change-password', userController.changePassword);
+router.put('/:id',  userController.update);
+router.delete('/:id', userController.destroy);
+router.get('/:id',userController.getById);
 router.post('/', userController.create);
 router.get('/', userController.getAll);
 

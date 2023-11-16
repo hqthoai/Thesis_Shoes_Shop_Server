@@ -21,7 +21,7 @@ const ProductController = {
     getLatest: async (req, res) => {
         try {
             const products = await Product.find()
-            .limit(10)
+            .limit(5)
             .sort();
             res.status(200).json(products);
         } catch (error) {

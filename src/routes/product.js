@@ -3,7 +3,8 @@ const router = express.Router();
 const authToken = require('../middlewares/authToken');
 const ProductController = require('../controller/ProductController');
 
-router.put('/delete/:id', authToken.verifyTokenAdmin, ProductController.delete);
+router.get('/lastest-products', ProductController.getLatest)
+router.put('/:id/delete', authToken.verifyTokenAdmin, ProductController.delete);
 router.put('/:id', authToken.verifyTokenAdmin, ProductController.update);
 router.delete('/:id', authToken.verifyTokenAdmin, ProductController.destroy);
 router.get('/:id', ProductController.getById);  
