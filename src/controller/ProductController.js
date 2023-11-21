@@ -44,7 +44,7 @@ const ProductController = {
 
     create: (req, res) => { 
         const fileData = req.file;
-        console.log(fileData);
+        
         const productData = {...req.body, images:fileData?.path};
         try {
             const product = new Product(productData);
@@ -60,7 +60,9 @@ const ProductController = {
     update: (req, res) => {
         Product.findOne({_id: req.params.id})
         .then((product) => {
-            Product.updateOne({_id: product._id}, req.body)
+            const fileData = req.file;
+            const productData = {...req.body, images:fileData?.path};
+            Product.updateOne({_id: product._id}, productData)
             .then(()=>{
                 res.status(200).json('Cập nhật sản phẩm thành công.');
             })
@@ -88,21 +90,33 @@ const ProductController = {
             res.status(404).json('Không tìm thấy sản phẩm.');
         })
     },
+    
+    extractPublicIdFromURL: (imageURL)  => {
+        const fileName = urlParts[urlParts.length - 2]+ '/' + urlParts[urlParts.length - 1];
+        const publicId = fileName.split('.')[0];
+        return publicId;
+    },
 
     destroy: async (req, res) => {
         try {
-            const result = await Product.deleteOne({_id: req.params.id});
-            if (result.deletedCount===0) {
+            const result = await Product.findOneAndDelete({_id: req.params.id});
+            if (!result) {
                 res.status(404).json('Không tìm thấy sản phẩm.');
             }
             else {
-                res.status(204).json('Xóa vĩnh viễn sản phẩm thành công.');
+                const publicId = ProductController.extractPublicIdFromURL(result.images);
+                cloudinary.uploader.destroy(publicId, (error, result) => {
+                    if (error) {
+                      console.error(error);
+                      return res.status(500).json(`Xảy ra lỗi trong quá trình xóa sản phẩm: ${error}`);
+                    }
+                    res.status(204).json('Xóa vĩnh viễn sản phẩm thành công.');
+                });
             }
-        } catch (error) {
+        } catch (err) {
             res.status(500).json(`Xảy ra lỗi trong quá trình xóa sản phẩm :  ${err}`)
         }
     }
-
 }
 
 module.exports = ProductController;

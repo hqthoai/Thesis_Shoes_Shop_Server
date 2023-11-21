@@ -6,7 +6,7 @@ const uploadCloud = require('../middlewares/uploader');
 
 router.get('/lastest-products', ProductController.getLatest)
 router.put('/:id/delete',  ProductController.delete);
-router.put('/:id', ProductController.update);
+router.put('/:id',uploadCloud.single('images'), ProductController.update);
 router.delete('/:id', ProductController.destroy);
 router.get('/:id', ProductController.getById);  
 router.post('/', uploadCloud.single('images') ,ProductController.create);
