@@ -84,8 +84,8 @@ const UserController = {
                 return res.status(200).json("Cập nhật user thành công")
             }
             else {
-                return res.status(400).json({
-                    message:'User đã tồn tại!',
+                return res.status(404).json({
+                    message:'Không tìm thấy user!',
                 })
             }
         } catch (err) {

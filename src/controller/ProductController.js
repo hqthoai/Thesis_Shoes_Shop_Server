@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const cloudinary = require('cloudinary').v2;
 
 const ProductController = {
     
@@ -42,11 +43,16 @@ const ProductController = {
     },
 
     create: (req, res) => { 
-        const product = new Product(req.body);
+        const fileData = req.file;
+        console.log(fileData);
+        const productData = {...req.body, images:fileData?.path};
         try {
+            const product = new Product(productData);
             product.save();
             res.status(201).json(product);
         } catch (error) {
+            if (fileData)
+                cloudinary.uploader.destroy(fileData.filename);
             res.status(500).json(`Xảy ra lỗi trong quá trình tạo sản phẩm :  ${err}`)
         }  
     },
