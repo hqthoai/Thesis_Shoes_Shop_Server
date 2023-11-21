@@ -92,6 +92,7 @@ const ProductController = {
     },
     
     extractPublicIdFromURL: (imageURL)  => {
+        const urlParts = imageURL.split('/');
         const fileName = urlParts[urlParts.length - 2]+ '/' + urlParts[urlParts.length - 1];
         const publicId = fileName.split('.')[0];
         return publicId;
@@ -105,10 +106,11 @@ const ProductController = {
             }
             else {
                 const publicId = ProductController.extractPublicIdFromURL(result.images);
+                
                 cloudinary.uploader.destroy(publicId, (error, result) => {
                     if (error) {
-                      console.error(error);
-                      return res.status(500).json(`Xảy ra lỗi trong quá trình xóa sản phẩm: ${error}`);
+                    console.error(error);
+                    return res.status(500).json(`Xảy ra lỗi trong quá trình xóa sản phẩm: ${error}`);
                     }
                     res.status(204).json('Xóa vĩnh viễn sản phẩm thành công.');
                 });
