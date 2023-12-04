@@ -1,3 +1,4 @@
+const Category = require('../models/Category');
 const Product = require('../models/Product');
 const cloudinary = require('cloudinary').v2;
 
@@ -16,6 +17,28 @@ const ProductController = {
         })
         .catch(()=>{
             res.status(404).json('Không tìm thấy sản phẩm.')
+        })
+    },
+
+    getByCategory: (req, res) => {
+        const categoryName = req.params.category;
+
+        Category.find({})
+        .then((categories)=> {
+            const foundCategory = categories.find(
+                (category) => category.name.localeCompare(categoryName, "en", { sensitivity: "base" }) === 0
+            );
+
+            Product.find({categoryId:foundCategory._id})
+            .then((products)=> {
+                res.status(200).json(products);
+            })
+            .catch(()=> {
+                res.status(500).json('Lỗi khi lấy danh sách sản phẩm')
+            })
+        })
+        .catch(()=>{
+            res.status(404).json('Không tìm thấy category')
         })
     },
 
