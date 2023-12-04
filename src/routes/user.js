@@ -7,6 +7,7 @@ const userController = require ('../controller/UserController');
 
 router.put('/:id/delete', authToken.verifyTokenAdmin, userController.delete);
 router.put('/:id/change-password', userController.changePassword);
+router.put('/:id/profile', userController.updateProfile);
 router.put('/:id',  userController.update);
 router.delete('/:id', userController.destroy);
 router.get('/:id',userController.getById);

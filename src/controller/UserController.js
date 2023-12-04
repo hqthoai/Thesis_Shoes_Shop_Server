@@ -19,6 +19,24 @@ const UserController = {
             res.status(404).json('Không tìm thấy người dùng.');
         })
     },
+    
+    updateProfile: async (req, res) => {
+        try {
+            const id = req.params.id;
+            const user = await User.findOne({ _id: id });
+            if (user) {
+                await User.updateOne({_id: id}, req.body)
+                return res.status(200).json("Cập nhật profile thành công")
+            }
+            else {
+                return res.status(404).json({
+                    message:'Không tìm thấy user!',
+                })
+            }
+        } catch (err) {
+            return res.status(400).json(`Có lỗi trong quá trình cập nhật profile :  ${err}`)
+        }
+    },
 
     changePassword: (req, res) => {
         User.findOne({_id: req.params.id})
