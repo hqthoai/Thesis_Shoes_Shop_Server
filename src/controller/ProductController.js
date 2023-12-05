@@ -19,7 +19,7 @@ const ProductController = {
                 sizes: product.sizes,
                 colors: product.colors,
                 brand: product.brand.name,          // Lấy tên của brand
-                category: product.categoryId.name, // Lấy tên của categoryId
+                category: product.categoryId ? product.categoryId.name : null, // Lấy tên của categoryId
                 rating: product.rating,
                 numReviews: product.numReviews,
                 countInStock: product.countInStock,
@@ -34,9 +34,10 @@ const ProductController = {
 
     getById: (req, res) => {
         Product.findOne({_id: req.params.id})
-        .then( async (product) => {
+        .then((product) => {
+            console.log(product);
             let parentCategoryId = null;
-            const category = await Category.findOne({_id: product.categoryId});
+            const category = Category.findOne({_id: product.categoryId});
             if (category.parentId !== null) {
                 parentCategoryId = category.parentId;
             }
@@ -50,7 +51,7 @@ const ProductController = {
                 sizes: product.sizes,
                 colors: product.colors,
                 brand: product.brand,
-                category: product.categoryId,
+                category: product.categoryId ? product.categoryId : null,
                 parentCategoryId: parentCategoryId,
                 rating: product.rating,
                 numReviews: product.numReviews,
@@ -113,8 +114,15 @@ const ProductController = {
 
     create: (req, res) => { 
         const fileData = req.file;
-        
-        const productData = {...req.body, images:fileData?.path};
+        let categoryId = req.body.categoryId;
+        if (!categoryId) {
+            categoryId = null
+        } 
+        const productData = {
+            ...req.body,
+            categoryId: categoryId, 
+            images:fileData?.path
+        };
         try {
             const product = new Product(productData);
             product.save();
