@@ -6,14 +6,60 @@ const ProductController = {
     
     getAll: (req, res) => {
         Product.find({})
-        .then ((products)=> res.status(200).json(products))
+        .populate('brand', 'name')
+        .populate('categoryId', 'name')
+        .then ((products)=>{
+            const productList = products.map((product) => ({
+                _id: product._id,
+                name: product.name,
+                images: product.images,
+                description: product.description,
+                price: product.price,
+                priceSale: product.priceSale,
+                sizes: product.sizes,
+                colors: product.colors,
+                brand: product.brand.name,          // Lấy tên của brand
+                category: product.categoryId.name, // Lấy tên của categoryId
+                rating: product.rating,
+                numReviews: product.numReviews,
+                countInStock: product.countInStock,
+                isActive: product.isActive,
+                createdAt: product.createdAt,
+                updatedAt: product.updatedAt,
+              }));
+            res.status(200).json(productList)
+        })
         .catch(() => res.status(404).json('Không tìm thấy danh sách sản phẩm.'));
     },
 
     getById: (req, res) => {
         Product.findOne({_id: req.params.id})
-        .then((product) => {
-           res.status(200).json(product);
+        .then( async (product) => {
+            let parentCategoryId = null;
+            const category = await Category.findOne({_id: product.categoryId});
+            if (category.parentId !== null) {
+                parentCategoryId = category.parentId;
+            }
+            const data = {
+                _id: product._id,
+                name: product.name,
+                images: product.images,
+                description: product.description,
+                price: product.price,
+                priceSale: product.priceSale,
+                sizes: product.sizes,
+                colors: product.colors,
+                brand: product.brand,
+                category: product.categoryId,
+                parentCategoryId: parentCategoryId,
+                rating: product.rating,
+                numReviews: product.numReviews,
+                countInStock: product.countInStock,
+                isActive: product.isActive,
+                createdAt: product.createdAt,
+                updatedAt: product.updatedAt,
+              };
+            res.status(200).json(data);
         })
         .catch(()=>{
             res.status(404).json('Không tìm thấy sản phẩm.')
