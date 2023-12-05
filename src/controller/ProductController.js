@@ -18,7 +18,7 @@ const ProductController = {
                 priceSale: product.priceSale,
                 sizes: product.sizes,
                 colors: product.colors,
-                brand: product.brand.name,          // Lấy tên của brand
+                brand: product.brand ? product.brand.name : null,          // Lấy tên của brand
                 category: product.categoryId ? product.categoryId.name : null, // Lấy tên của categoryId
                 rating: product.rating,
                 numReviews: product.numReviews,
@@ -50,7 +50,7 @@ const ProductController = {
                 priceSale: product.priceSale,
                 sizes: product.sizes,
                 colors: product.colors,
-                brand: product.brand,
+                brand: product.brand  ? product.brand : null,
                 category: product.categoryId ? product.categoryId : null,
                 parentCategoryId: parentCategoryId,
                 rating: product.rating,
@@ -115,13 +115,14 @@ const ProductController = {
     create: (req, res) => { 
         const fileData = req.file;
         let categoryId = req.body.categoryId;
-        if (!categoryId) {
-            categoryId = null
-        } 
+        let brandId = req.body.brand;
+        if (!categoryId)  categoryId = null;
+        if (!brandId) brandId = null;
         const productData = {
             ...req.body,
             categoryId: categoryId, 
-            images:fileData?.path
+            brand: brandId,
+            images:fileData? fileData.path: null
         };
         try {
             const product = new Product(productData);
