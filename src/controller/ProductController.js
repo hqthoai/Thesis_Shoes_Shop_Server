@@ -34,11 +34,11 @@ const ProductController = {
 
     getById: (req, res) => {
         Product.findOne({_id: req.params.id})
-        .then((product) => {
-            console.log(product);
+        .then( async (product) => {
             let parentCategoryId = null;
-            const category = Category.findOne({_id: product.categoryId});
-            if (category.parentId !== null) {
+            const category = await Category.findOne({_id: product.categoryId});
+            
+            if (category.parentId) {
                 parentCategoryId = category.parentId;
             }
             const data = {
