@@ -10,7 +10,7 @@ const Product = new Schema(
         priceSale: { type: Number, required: true },
         sizes :[{ type:Number, required:true }],
         colors :[{ type:String, required:true }],
-        brand: { type: Schema.Types.ObjectId, ref:'Brand', default: true },
+        brand: { type: Schema.Types.ObjectId, ref:'Brand', default: null },
         categoryId : { type: Schema.Types.ObjectId, ref:'Category', default:null },
         rating: { type: Number, default: 0 },
         numReviews: { type: Number, default: 0 },

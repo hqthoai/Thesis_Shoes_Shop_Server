@@ -3,9 +3,36 @@ const Category = require('../models/Category');
 const CategoryController = {
     
     getAll: (req, res) => {
-        Category.find({})
-            .then ((categories)=> res.status(200).json(categories))
-            .catch(() => res.status(404).json('Không tìm thấy danh sách danh mục.'));
+        Category.aggregate([
+            {
+              $lookup: {
+                from: 'categories',
+                localField: 'parentId',
+                foreignField: '_id',
+                as: 'parentCategory'
+              }
+            },
+            {
+              $project: {
+                _id: 1,
+                name: 1,
+                description: 1,
+                parentCategory: {
+                  $arrayElemAt: ['$parentCategory.name', 0]
+                },
+                isActive: 1,
+                createdAt: 1,
+                updatedAt: 1
+              }
+            }
+          ])
+          .exec()
+          .then((categories) => {
+            res.status(200).json(categories);
+          })
+          .catch((err) => {
+            res.status(404).json('Không tìm thấy danh sách danh mục.');
+          });
     },
 
     getParentCategory: (req, res) => {
@@ -37,7 +64,14 @@ const CategoryController = {
     },
 
     create: (req, res) => { 
-        const category = new Category(req.body);
+        let parentId = req.body.parentId;
+
+        if (!parentId) 
+            parentId = null;
+        const category = new Category({
+            ...req.body,
+            parentId: parentId
+        });
         try {
             category.save();
             res.status(201).json(category);
