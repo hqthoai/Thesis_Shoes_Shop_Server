@@ -4,7 +4,7 @@ const authToken = require('../middlewares/authToken');
 const userController = require ('../controller/UserController');
 
 // router.post('/create', userController.create);
-
+router.get('/check-email-availability', userController.checkEmailAvailability); // check email exist 
 router.put('/:id/delete', authToken.verifyTokenAdmin, userController.delete);
 router.put('/:id/change-password', userController.changePassword);
 router.put('/:id/profile', userController.updateProfile);
