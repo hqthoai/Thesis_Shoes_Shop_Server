@@ -9,8 +9,8 @@ const Order = new Schema(
         paymentMethod: { type: String },
         shippingFee: { type: Number },
         status:{type: String, default: 'processing' },
-        canceledAt: {type: Date},
-        completedAt: {type: Date},
+        // canceledAt: {type: Date},
+        // completedAt: {type: Date},
     }, 
     {
         timestamps: true
