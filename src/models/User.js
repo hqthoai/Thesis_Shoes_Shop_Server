@@ -13,6 +13,7 @@ const User = new Schema(
         isActive: { type: Boolean, default: true},
         accessToken: { type: String, default:""},
         refreshTokens: [{ type: String, default:"" }],
+        cart: {type: Object},
         orders: [{ type: Schema.Types.ObjectId, ref: 'Order'}]
     }, 
     {
