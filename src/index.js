@@ -21,5 +21,3 @@ route(app);
 app.listen(port, ()=> {
     console.log(`Sever is running at http://localhost:${port}`);
 })
-
-export default app;
