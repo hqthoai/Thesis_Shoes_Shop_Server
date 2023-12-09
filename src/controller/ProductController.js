@@ -92,7 +92,7 @@ const ProductController = {
     getLatest: async (req, res) => {
         try {
             const products = await Product.find()
-            .limit(5)
+            .limit(10)
             .sort();
             res.status(200).json(products);
         } catch (error) {
