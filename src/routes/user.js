@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const authToken = require('../middlewares/authToken');
 const userController = require ('../controller/UserController');
+const EmailController = require('../controller/EmailController');
 
 // router.post('/create', userController.create);
+router.post('/recover-password', EmailController.sendRecoverPassEmail)
 router.get('/check-email-availability', userController.checkEmailAvailability); // check email exist 
 router.put('/:id/delete', authToken.verifyTokenAdmin, userController.delete);
 router.put('/:id/change-password', userController.changePassword);

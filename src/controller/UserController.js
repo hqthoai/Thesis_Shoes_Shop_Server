@@ -25,9 +25,9 @@ const UserController = {
       const existentUser = await User.findOne({ email });
 
       if (!existentUser) {
-        res.json({ available: true });
+        res.status(200).json({ available: true });
       } else {
-        res.json({ available: false });
+        res.status(200).json({ available: false });
       }
     } catch (error) {
       console.error("Error checking email availability:", error);
@@ -51,6 +51,23 @@ const UserController = {
       return res
         .status(400)
         .json(`Có lỗi trong quá trình cập nhật profile :  ${err}`);
+    }
+  },
+  recoverPassword: async (email, password) => {
+    try {
+      const user = await User.findOne({ email:email });
+      if (user) {
+        const hashPassword = await bcrypt.hash(password, 10);
+        const userUpdated = {
+          password: hashPassword,
+        };
+        await User.updateOne({ _id: user._id }, userUpdated);
+        return "Cập nhật password thành công";
+      } else {
+        return "Không tìm thấy user!";
+      }
+    } catch (err) {
+      return `Có lỗi trong quá trình reset password :  ${err}`;
     }
   },
 

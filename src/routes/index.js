@@ -4,6 +4,7 @@ const categoryRouter = require('./category');
 const brandRouter = require('./brand');
 const authRouter = require('./auth');
 const orderRouter = require('./order');
+
 function route(app) {
     app.use('/api/auths', authRouter)
     app.use('/api/products', productRouter);
