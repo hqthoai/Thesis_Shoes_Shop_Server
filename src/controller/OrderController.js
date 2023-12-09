@@ -11,10 +11,21 @@ const OrderController = {
     getById: (req, res) => {
         Order.findOne({_id: req.params.id})
         .then((order) => {
-            res.json(order);
+            res.status(200).json(order);
         })
         .catch(()=>{
             res.status(404).json('Không tìm thấy đơn hàng.')
+        })
+    },
+
+    getOrderByUserId: (req, res) => {
+        Order.find({owner: req.params.id})
+        .then((orders) => {
+            console.log(orders);
+            res.status(200).json(orders);
+        })
+        .catch(()=>{
+            res.status(404).json('Không tìm thấy người dùng.')
         })
     },
 
