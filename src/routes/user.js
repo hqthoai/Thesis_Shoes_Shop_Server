@@ -10,7 +10,7 @@ router.get('/:id/orders', OrderController.getOrderByUserId);
 router.post('/recover-password', EmailController.sendRecoverPassEmail)
 router.get('/check-email-availability', userController.checkEmailAvailability); // check email exist 
 router.put('/:id/delete', authToken.verifyTokenAdmin, userController.delete);
-router.put('/:id/change-password', userController.changePassword);
+router.put('/change-password', userController.changePassword);
 router.put('/:id/profile', userController.updateProfile);
 router.put('/:id',  userController.update);
 router.delete('/:id', userController.destroy);

@@ -72,8 +72,10 @@ const UserController = {
   },
 
   changePassword: (req, res) => {
-    User.findOne({ _id: req.params.id })
+    console.log(req);
+    User.findOne({ _id: req.body.id })
       .then(async (user) => {
+        console.log(user);
         const { password, newPassword } = req.body;
         // kiểm tra password người dùng gửi lên
         const isSamePassword = bcrypt.compareSync(password, user.password);
