@@ -5,9 +5,9 @@ const Order = new Schema(
     {
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         items: [{ type: Object}],
-        totalAmount:{ type:Number },
+        totalAmount:{ type: String },
         paymentMethod: { type: String },
-        shippingFee: { type: Number },
+        shippingFee: { type: String },
         status:{type: String, default: 'processing' },
         // canceledAt: {type: Date},
         // completedAt: {type: Date},
