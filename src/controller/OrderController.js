@@ -11,6 +11,7 @@ const OrderController = {
     getLastestOrder: async (req, res) => {
         try {
             const orders = await Order.find()
+            .populate('owner', 'firstName lastName')
             .limit(10)
             .sort();
             res.status(200).json(orders);
