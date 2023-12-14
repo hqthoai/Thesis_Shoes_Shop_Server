@@ -8,6 +8,17 @@ const OrderController = {
             .catch(() => res.status(404).json('Không tìm thấy danh sách đơn hàng.'));
     },
 
+    getLastestOrder: async (req, res) => {
+        try {
+            const orders = await Order.find()
+            .limit(10)
+            .sort();
+            res.status(200).json(orders);
+        } catch (error) {
+            res.status(500).json ('Có lỗi xảy ra!')   
+        }
+    },
+
     getById: (req, res) => {
         Order.findOne({_id: req.params.id})
         .then((order) => {
